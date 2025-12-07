@@ -18,6 +18,8 @@ spec:
         app: jitsi
         component: web
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: kube-node-002  # Node with Longhorn support
       containers:
         - name: web
           image: jitsi/web:stable-9584

@@ -18,6 +18,8 @@ spec:
         app: jitsi
         component: jicofo
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: kube-node-002  # Node with Longhorn support
       containers:
         - name: jicofo
           image: jitsi/jicofo:stable-9584

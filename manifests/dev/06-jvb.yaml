@@ -18,6 +18,8 @@ spec:
         app: jitsi
         component: jvb
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: kube-node-002  # Node with Longhorn support
       containers:
         - name: jvb
           image: jitsi/jvb:stable-9584
