@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: jitsi-config
+  namespace: jitsi
+data:
+  # Public URL for the web service
+  PUBLIC_URL: "https://telehealth.apps-o.hinisoft.com"
+  
+  # XMPP domain configuration
+  XMPP_DOMAIN: "meet.jitsi"
+  XMPP_AUTH_DOMAIN: "auth.meet.jitsi"
+  XMPP_MUC_DOMAIN: "muc.meet.jitsi"
+  XMPP_INTERNAL_MUC_DOMAIN: "internal-muc.meet.jitsi"
+  XMPP_GUEST_DOMAIN: "guest.meet.jitsi"
+  XMPP_RECORDER_DOMAIN: "recorder.meet.jitsi"
+  
+  # JVB configuration
+  JVB_AUTH_USER: "jvb"
+  JVB_STUN_SERVERS: "stun.l.google.com:19302,stun1.l.google.com:19302"
+  JVB_PORT: "10000"
+  JVB_TCP_HARVESTER_DISABLED: "true"
+  
+  # Jicofo configuration
+  JICOFO_AUTH_USER: "focus"
+  JICOFO_COMPONENT_SECRET: "s3cr3t"
+  
+  # Enable authentication
+  ENABLE_AUTH: "1"
+  ENABLE_GUESTS: "1"
+  AUTH_TYPE: "internal"
+  
+  # Disable watermark
+  DISABLE_WATERMARK: "true"
+  
+  # Timezone
+  TZ: "America/Denver"
+  
+  # Enable recording (optional)
+  ENABLE_RECORDING: "0"
+  
+  # Interface config
+  INTERFACE_CONFIG_SHOW_JITSI_WATERMARK: "false"
+  INTERFACE_CONFIG_SHOW_WATERMARK_FOR_GUESTS: "false"
+  INTERFACE_CONFIG_SHOW_BRAND_WATERMARK: "false"
+  
+  # Etherpad (disabled by default)
+  ETHERPAD_URL_BASE: ""

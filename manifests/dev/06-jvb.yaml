@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jvb
+  namespace: jitsi
+  labels:
+    app: jitsi
+    component: jvb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jitsi
+      component: jvb
+  template:
+    metadata:
+      labels:
+        app: jitsi
+        component: jvb
+    spec:
+      containers:
+        - name: jvb
+          image: jitsi/jvb:stable-9584
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: jitsi-config
+            - secretRef:
+                name: jitsi-secrets
+          env:
+            - name: DOCKER_HOST_ADDRESS
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+          ports:
+            - name: rtp-udp
+              containerPort: 10000
+              protocol: UDP
+            - name: colibri
+              containerPort: 8080
+              protocol: TCP
+          volumeMounts:
+            - name: jvb-config
+              mountPath: /config
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "200m"
+            limits:
+              memory: "1Gi"
+              cpu: "1000m"
+      volumes:
+        - name: jvb-config
+          persistentVolumeClaim:
+            claimName: jitsi-jvb-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jvb
+  namespace: jitsi
+  labels:
+    app: jitsi
+    component: jvb
+spec:
+  type: NodePort
+  selector:
+    app: jitsi
+    component: jvb
+  ports:
+    - name: rtp-udp
+      port: 10000
+      targetPort: 10000
+      protocol: UDP
+      nodePort: 30000
+    - name: colibri
+      port: 8080
+      targetPort: 8080
+      protocol: TCP

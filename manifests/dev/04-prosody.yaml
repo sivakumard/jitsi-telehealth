@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prosody
+  namespace: jitsi
+  labels:
+    app: jitsi
+    component: prosody
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jitsi
+      component: prosody
+  template:
+    metadata:
+      labels:
+        app: jitsi
+        component: prosody
+    spec:
+      containers:
+        - name: prosody
+          image: jitsi/prosody:stable-9584
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: jitsi-config
+            - secretRef:
+                name: jitsi-secrets
+          ports:
+            - name: xmpp-c2s
+              containerPort: 5222
+              protocol: TCP
+            - name: xmpp-s2s
+              containerPort: 5269
+              protocol: TCP
+            - name: xmpp-component
+              containerPort: 5347
+              protocol: TCP
+          volumeMounts:
+            - name: prosody-config
+              mountPath: /config
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+      volumes:
+        - name: prosody-config
+          persistentVolumeClaim:
+            claimName: jitsi-prosody-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prosody
+  namespace: jitsi
+  labels:
+    app: jitsi
+    component: prosody
+spec:
+  type: ClusterIP
+  selector:
+    app: jitsi
+    component: prosody
+  ports:
+    - name: xmpp-c2s
+      port: 5222
+      targetPort: 5222
+      protocol: TCP
+    - name: xmpp-s2s
+      port: 5269
+      targetPort: 5269
+      protocol: TCP
+    - name: xmpp-component
+      port: 5347
+      targetPort: 5347
+      protocol: TCP
