@@ -25,10 +25,17 @@ data:
   JICOFO_AUTH_USER: "focus"
   JICOFO_COMPONENT_SECRET: "s3cr3t"
   
-  # Enable authentication
+  # Enable JWT authentication for OpenEMR integration
   ENABLE_AUTH: "1"
-  ENABLE_GUESTS: "1"
-  AUTH_TYPE: "internal"
+  ENABLE_GUESTS: "0"
+  AUTH_TYPE: "jwt"
+  JWT_APP_ID: "openemr_telehealth"
+  JWT_ACCEPTED_ISSUERS: "openemr"
+  JWT_ACCEPTED_AUDIENCES: "openemr_telehealth"
+  JWT_ASAP_KEYSERVER: ""
+  JWT_ALLOW_EMPTY: "0"
+  JWT_AUTH_TYPE: "token"
+  JWT_TOKEN_AUTH_MODULE: "token_verification"
   
   # Disable watermark
   DISABLE_WATERMARK: "true"
